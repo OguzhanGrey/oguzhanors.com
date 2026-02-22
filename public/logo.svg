@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Transparent background for modern look -->
+  
+  <defs>
+    <linearGradient id="mainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#aaaaaa" />
+    </linearGradient>
+    <linearGradient id="orbitGrad1" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00e5ff" />
+      <stop offset="100%" stop-color="#0088ff" />
+    </linearGradient>
+    <linearGradient id="orbitGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff0055" />
+      <stop offset="100%" stop-color="#ff7700" />
+    </linearGradient>
+  </defs>
+
+  <!-- The massive, bold 'O' symbol -->
+  <circle cx="50" cy="50" r="26" fill="none" stroke="url(#mainGrad)" stroke-width="8" />
+  
+  <!-- Atomic / Orbital Rings representing Aerospace, Data, and Innovation -->
+  <!-- Orbit 1 (tilted 45 degrees) -->
+  <ellipse cx="50" cy="50" rx="40" ry="12" fill="none" stroke="url(#orbitGrad1)" stroke-width="3" transform="rotate(45 50 50)" />
+  
+  <!-- Orbit 2 (tilted -45 degrees) -->
+  <ellipse cx="50" cy="50" rx="40" ry="12" fill="none" stroke="url(#orbitGrad2)" stroke-width="3" transform="rotate(-45 50 50)" />
+
+  <!-- Core processor / energy dot inside the O -->
+  <circle cx="50" cy="50" r="4" fill="#00ff88" filter="drop-shadow(0 0 4px #00ff88)" />
+</svg>

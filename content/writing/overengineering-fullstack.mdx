@@ -1,0 +1,24 @@
+---
+title: "Why Simple Architectures Win"
+date: "2022-10-12"
+description: "The hidden costs of adopting microservices and complex message queues too early."
+tags: ["Architecture", "Backend", "Node.js"]
+---
+
+Engineers love complex solutions. There's a natural dopamine hit that comes from drawing a diagram with a dozen distinct services, load balancers, message queues, and distributed databases. It feels like "real" engineering.
+
+I fell into this trap on a project a few years ago. We were building a system to ingest telemetry data from a fleet of test vehicles. Before we even had 10 active users, I designed a microservices architecture using RabbitMQ, a separate auth service, an ingestion service, and a frontend aggregation API.
+
+**The Distributed Monolith**
+
+Within three months, development ground to a halt. To add a single new sensor field, an engineer had to update the database schema, update the ingestion service payload validation, update the RabbitMQ message struct, and finally update the API layer. 
+
+We hadn't built a microservices architecture. We had built a distributed monolith. We had all the deployment complexity of microservices, but because the services were tightly coupled to the data model, we had none of the independent scalability benefits.
+
+**Retreating to the Monolith**
+
+We made the painful decision to rewrite the core logic into a single, modular Node.js monolith. 
+
+The result? Feature velocity skyrocketed. An engineer could trace a request from the router, down to the database, and back up to the response in a single file tree. Deployment meant pushing one Docker container.
+
+I’m not saying microservices are bad. But they solve organizational scaling problems, not necessarily technical ones. Until your engineering team is too big to comfortably work in a single repository, stick to a well-structured monolith. Complexity is a liability, not a badge of honor.

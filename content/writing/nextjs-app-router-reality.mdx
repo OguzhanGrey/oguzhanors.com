@@ -1,0 +1,30 @@
+---
+title: "The Reality of Next.js App Router in Production"
+date: "2024-01-10"
+description: "Navigating the hype vs. the actual engineering trade-offs of Server Components."
+tags: ["Next.js", "React", "Frontend"]
+---
+
+When the Next.js App Router and React Server Components (RSC) dropped, the hype was deafening. "No more client-side fetching!" "Zero JS shipped to the browser!" 
+
+I decided to migrate a mid-sized dashboard to the new paradigm to see if it lived up to the promises. The migration was... humbling.
+
+**Mental Model Shift**
+
+The biggest hurdle wasn't the syntax, it was the mental model. For years, we built React apps thinking about component lifecycle and state. Suddenly, I had to intensely scrutinize the tree to figure out where the server boundaries ended and the client boundaries began.
+
+I kept hitting the classic `“useState only works in Client Components”` error because I tried to sprinkle interactivity too high up the tree. 
+
+The architecture forces you to push state down to the absolute lowest leaf node possible. It's actually a great pattern—it forces better component design—but adopting it on an existing codebase feels like untangling a bowl of spaghetti.
+
+**Caching is Hard**
+
+Next.js's aggressive caching behavior in the App Router is a double-edged sword. It makes navigations lightning fast, but dealing with route segment caching, fetch caching, and client-side router caching felt like fighting the framework.
+
+I had a bug where a mutation succeeded on the server, but the UI wouldn't update because the client router decided it still had a valid cache of the layout. Navigating the `revalidatePath` and `revalidateTag` APIs took longer than writing the actual feature.
+
+**The Verdict**
+
+Is it better? Yes. Once you internalize the boundaries and the caching mechanics, shipping a page that only requires 20kb of JavaScript for a massive interactive table feels like a superpower. 
+
+But I'm deeply skeptical of anyone who says it's "simpler." It's not. It shifts complex state management from the client side to complex cache invalidation on the server side. As an engineer, you just have to pick which flavor of complexity you'd rather deal with.

@@ -1,0 +1,26 @@
+---
+title: "Telemetry & Ground Station System"
+date: "2025-06-22"
+description: "High-frequency embedded telemetry pipeline and Python-based ground station receiver."
+category: "Embedded"
+tags: ["C++", "Python", "UART", "Serial"]
+featured: true
+links: null
+image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000"
+---
+
+When a rocket leaves the pad, onboard SD card logging is great for post-flight analysis, but you need real-time data to know if the vehicle is safe. This project involved building the complete data pipeline from the STM32 MCU down to the ground station laptop.
+
+### Telemetry Packet Structure
+Bandwidth is extremely constrained, so sending ASCII or JSON was out of the question. I designed a tightly packed, fixed-length binary structure. Every payload begins with a specific sync word (`0xAA 0x55`), followed by a 1-byte message ID, a tightly aligned data struct (altitude, acceleration, state enum), and a 2-byte CRC16 checksum at the tail.
+
+### CRC Validation & Noise
+Early tests showed that UART communication over long wires and unshielded RF modules introduces flipped bits. Without validation, the ground station would occasionally parse a corrupted byte as a 10,000-meter altitude spike. Implementing a standard CRC-CCITT on both the transmission and receiving ends entirely eliminated corrupt parses. If the CRC fails, the packet is silently dropped.
+
+### Python Ground Station
+On the receiving end, I wrote a headless Python ground station. It listens to the serial port, searches the byte stream for the sync word, extracts the fixed length, and validates the CRC. Once validated, it unpacks the binary structure into a Python dictionary. 
+
+The strategy was to decouple parsing from logging. A producer thread handles the raw serial ingestion and pushes valid packets to a thread-safe queue. A consumer thread pulls from the queue, logs the raw hex to a CSV for replayability, and structures the data for any connected UI to read.
+
+### Decisions & Reflections
+I initially tried to build a complex Qt GUI directly into the parsing script. It was a mistake. Python's GIL caused the UI rendering to block the serial buffer, leading to dropped packets. Splitting the real-time parser into a standalone, headless logger and exposing the data over a local socket to a separate UI was a much more reliable engineering choice.

@@ -1,0 +1,33 @@
+---
+title: "Bridging Bare-Metal to the Web: Parsing Binary in Node.js"
+date: "2023-08-22"
+description: "How to efficiently pump high-speed telemetry from a serial port to a React dashboard."
+tags: ["Node.js", "WebSockets", "Hardware"]
+---
+
+There is a weird cultural divide in software. Front-end devs live in a world of JSON and REST APIs, while embedded devs live in a world of hex dumps and bitwise shifts. 
+
+When I was building a ground station dashboard for our telemetry system, I had to bridge this gap. The hardware blasted binary packets over a USB serial connection, and the React frontend needed real-time JSON updates. Node.js sat in the middle.
+
+A lot of web devs get intimidated by NodeJS `Buffer` objects, but they are incredibly powerful once you understand them.
+
+**The Streaming Problem**
+
+Serial ports don't send you neat, complete packets. They send streams of bytes. If your packet is 32 bytes long, the Node `serialport` library might emit a chunk of 10 bytes, then a chunk of 22 bytes. 
+
+If you try to parse the first chunk, your program crashes.
+
+I had to write a parser that maintained an internal buffer. It essentially worked like a state machine:
+1. Scan the stream for the start bytes (`0xAA 0x55`).
+2. Read the length byte.
+3. Wait until the internal buffer length >= payload length + checksum.
+4. Extract the full slice, calculate the CRC.
+5. If CRC matches, unpack the bytes into a JavaScript object.
+
+**Performance Over the Wire**
+
+Once parsed, the temptation is to `JSON.stringify` the whole object and blast it over WebSockets to React. For 5Hz data, fine. For 100Hz data with 40 variables, you will absolutely choke the browser's main thread.
+
+We ended up packing the data back into a compressed binary format (using ArrayBuffers) before sending it over the WebSocket. On the React side, a Web Worker unpacked it and only updated the UI components that actually needed a re-render.
+
+It was a great lesson: just because manipulating JSON is easy doesn't mean it's the right choice for high-frequency data.

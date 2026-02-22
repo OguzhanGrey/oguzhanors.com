@@ -1,0 +1,46 @@
+---
+title: "Lane Detection Pipeline (ADAS-lite) with OpenCV"
+date: "2026-04-15"
+description: "A lightweight Advanced Driver Assistance System pipeline identifying lane boundaries via classical computer vision."
+category: "Upcoming"
+tags: ["Python", "OpenCV", "numpy"]
+featured: true
+status: "In Progress"
+links: null
+image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1000&auto=format&fit=crop"
+---
+
+### Overview
+As part of an ongoing computer vision curriculum, this project involves building a real-time lane detection pipeline—a fundamental component of Advanced Driver Assistance Systems (ADAS). Unlike massive deep neural networks, this relies entirely on classical computer vision algorithms to ensure extreme execution speed.
+
+### Problem
+Dashboard camera video feeds suffer from variable lighting, lens distortion, and physical lane markers degrading. The system must reliably extract the lane lines and overlay them onto the original video feed at 30+ frames per second (FPS), without dropping frames.
+
+### Constraints
+- Must operate exclusively on the CPU using `OpenCV` and `numpy`.
+- Cannot utilize semantic segmentation models (e.g., U-Net).
+- Must aggressively maintain high FPS to be technically viable for real-time vehicular control loops.
+
+### Architecture
+The algorithmic pipeline follows a strict, sequential filtering process:
+1. **Grayscale Conversion & Gaussian Blur:** To eliminate high-frequency noise.
+2. **Canny Edge Detection:** To isolate stark gradient shifts (the lane lines).
+3. **Region of Interest (ROI) Masking:** Discarding the sky, trees, and oncoming traffic to focus solely on the road surface.
+4. **Hough Transform:** Extracting mathematical line segments from the remaining edge pixels.
+5. **Line Fitting:** Averaging and extrapolating the segments into two definitive left-and-right lane boundaries.
+
+### Key Decisions
+To stabilize the bounding lines, I avoided calculating the Hough Transform entirely independently per frame. Instead, I injected a simple rolling average across the last N frames, which prevents the detected lanes from violently "jittering" when a single frame encounters a shadow or glare.
+
+### Evaluation Plan
+The pipeline is evaluated against a suite of 5 distinct localized highway driving videos representing different conditions:
+- **Metrics:** Continuous FPS measurement overlaid on the output video.
+- **Robustness Check:** Visual inspection for jitter, false-positives under overpasses, and loss of track during lane changes.
+
+### Deliverables
+- Modular Python script executing the pipeline.
+- Annotated output `.mp4` files demonstrating the lane tracking.
+- Console logs tracking millisecond execution times per frame.
+
+### What I'd Improve Next
+Classical Hough transforms fail on sharp curves where the lane is fundamentally not a straight line. The next architectural iteration involves applying a perspective transform (Bird's Eye View) and sliding-window polynomial fitting to estimate actual lane curvature and vehicle offset.

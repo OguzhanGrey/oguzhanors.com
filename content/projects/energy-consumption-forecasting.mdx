@@ -1,0 +1,42 @@
+---
+title: "Energy Consumption Forecasting with Classical ML"
+date: "2026-03-01"
+description: "Forecasting hourly energy consumption using public datasets and walk-forward validation."
+category: "Upcoming"
+tags: ["Python", "pandas", "scikit-learn", "xgboost"]
+featured: true
+status: "Planned"
+links: null
+image: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&q=80&w=1000"
+---
+
+### Overview
+This academic project focuses on predicting hourly energy demand using classical machine learning techniques. While deep learning is popular for time series, tree-based models often provide a highly performant and interpretable baseline for tabular data, which is critical when acting as an engineering checkpoint.
+
+### Problem
+Raw energy consumption data is heavily influenced by exogenous variables (weather, holidays, time of day). The challenge is engineering the right lag features and properly splitting the dataset chronologically to avoid data leakage during training. 
+
+### Constraints
+- Training must run efficiently on local hardware without requiring GPU acceleration.
+- The dataset must be rigorously split strictly over time; standard random cross-validation (like K-Fold) is structurally invalid for time series and will artificially inflate performance metrics.
+
+### Architecture
+The pipeline is structured entirely in Python. We use `pandas` for aggressive feature engineering (cyclical time features, rolling means) and drop the formatted data into `scikit-learn` pipelines. We evaluate linear baselines against gradient boosted trees (`xgboost`).
+
+### Key Decisions
+I actively avoided recurrent neural networks (LSTMs) for this specific problem boundary. The latency and complexity of an LSTM didn't justify the marginal accuracy improvements over a well-tuned XGBoost model for standard hourly forecasts. 
+
+### Evaluation Plan
+The core evaluation relies on Walk-Forward Validation. We train on months 1-6, predict month 7. Then train on months 1-7, predict month 8. 
+Primary metrics evaluated are:
+- **MAE / RMSE:** To understand absolute error magnitude.
+- **Residual Analysis:** Plotting error distributions to detect remaining autocorrelation.
+- **Feature Importance:** To verify the model isn't overfitting to noise.
+
+### Deliverables
+- Python package with the data processing pipeline.
+- Jupyter Notebook containing the walk-forward evaluation and residual plots.
+- Final trained model artifacts.
+
+### What I'd Improve Next
+Currently, the pipeline requires loading the entire dataset into RAM. Refactoring the data loader to yield generators would allow for out-of-core training on datasets exceeding local memory constraints.

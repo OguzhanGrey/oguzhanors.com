@@ -1,0 +1,27 @@
+---
+title: "Pragmatic Sensor Filtering: You (Probably) Don't Need a Kalman Filter"
+date: "2023-05-18"
+description: "How to deal with noisy hardware data without overcomplicating your firmware."
+tags: ["Embedded", "Math", "Engineering"]
+---
+
+If you read enough aerospace textbooks, you'd think every single sensor reading on earth needs to be passed through a six-state Extended Kalman Filter before it's usable. 
+
+When I first started working with raw IMU (Inertial Measurement Unit) data for a small flight vehicle, I spent weeks trying to tune a complex filter. The math was beautiful on paper. In practice, rounding errors on the 32-bit microcontroller and incredibly noisy vibration data from the motor turned my majestic matrix math into a random number generator.
+
+**The Power of the Exponential Moving Average**
+
+I threw out the Kalman filter and implemented a simple Exponential Moving Average (EMA).
+
+```c
+// Alpha is between 0 and 1. Lower means smoother but more lag.
+filtered_value = (alpha * new_reading) + ((1.0 - alpha) * previous_filtered_value);
+```
+
+It took three lines of C code. It required almost zero CPU cycles. And guess what? It worked perfectly for our use case. We just needed to smooth out high-frequency vibrations to detect apogee, we didn't need millimeter-level precision.
+
+**Know Your Operational Envelope**
+
+The lesson here is knowing your operational envelope. If you're building a guided missile, yes, you need a Kalman filter. If you're trying to figure out if your vehicle is generally pointing up or generally tumbling, a basic low-pass filter is infinitely more reliable because it's easier to debug.
+
+Hardware gives you noisy, ugly data. Don't immediately reach for the most academically rigorous tool to clean it up. Reach for the tool that completely eliminates the failure mode you care about most, and nothing more.

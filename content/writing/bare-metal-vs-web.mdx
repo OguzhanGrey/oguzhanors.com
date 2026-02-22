@@ -1,0 +1,26 @@
+---
+title: "Bare-Metal vs. Web: Two Worlds of Software"
+date: "2022-06-05"
+description: "What web developers can learn from embedded engineers, and vice versa."
+tags: ["Engineering", "Culture", "C", "Web"]
+---
+
+Working across both embedded systems (C/C++ on microcontrollers) and full-stack web development (Node.js/React) gives you a strange dual-perspective. The two cultures operate under completely different sets of constraints, and they often look down on each other.
+
+Embedded engineers look at web development and see bloated, inefficient layers of abstraction. Web engineers look at embedded systems and see archaic, slow-moving development cycles lacking modern tooling. 
+
+Both are right, and both are wrong.
+
+**What the Web Needs to Learn from Embedded**
+
+Resource respect. In web development, if your app is slow, the immediate reaction is often "buy a bigger server" or "the user's PC is fast enough." 
+
+Embedded programming forces you to care about memory layout, CPU cycles, and garbage collection pauses (because you don't have a garbage collector). If web developers applied just 10% of the memory-conscious mindset of a firmware engineer, modern web apps wouldn't consume 2GB of RAM just to display a chat interface.
+
+**What Embedded Needs to Learn from the Web**
+
+Developer experience (DX) and tooling. The web ecosystem moves terrifyingly fast, but it produces incredible tools. Hot-reloading, automated CI/CD pipelines, integrated testing frameworks—these are taken for granted in web dev.
+
+In the embedded world, you are often fighting obscure compiler flags, proprietary IDEs that look like they were built in 1995, and manual hardware-in-the-loop testing. Adopting agile testing practices and modern build pipelines (like using CMake effectively with CI) drastically improves firmware quality.
+
+Ultimately, engineering is engineering. Whether you're optimizing a DMA transfer on an STM32 or optimizing a server-side render in Next.js, the core skill is identifying the bottleneck and applying the right abstraction. The best engineers I know are the ones willing to cross the aisle and learn from both worlds.

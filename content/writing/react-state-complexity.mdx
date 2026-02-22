@@ -1,0 +1,28 @@
+---
+title: "Stepping Back from Redux: A Case for Simpler State"
+date: "2023-01-29"
+description: "Reflections on over-engineering frontend state and why context is usually enough."
+tags: ["React", "Architecture", "Frontend"]
+---
+
+There was a period in web development where if you were building a React app, you were using Redux. Period. It didn't matter if your app was an enterprise dashboard or a to-do list; we were all writing deeply nested reducers and massive action payload files.
+
+I built several large-scale apps this way. The boilerplate was painful, but the promise was "predictability." 
+
+**The Predictability Myth**
+
+What I found in practice was that a global store didn't actually make the app predictable. It just centralized the chaos. Components that had absolutely no business knowing about the global authentication state were suddenly wired into the same store that handled UI modal toggles. 
+
+When you make everything globally accessible, you break encapsulation. Tracking down a bug often meant tracing an action dispatched from a header component that somehow triggered a re-render in a deeply nested footer widget.
+
+**Embracing Context and Local State**
+
+These days, I aggressively avoid global state until it's absolutely unavoidable. 
+
+Most data falls into two categories:
+1. **Server Cache**: User profiles, lists of items from the database. (Use React Query or SWR).
+2. **Local UI State**: Is this dropdown open? What is typed in this input? (Use `useState`).
+
+The leftover "true global state" (like a user's dark mode preference) is so minimal that a standard React Context provider is more than enough. 
+
+Architecture is largely about drawing boundaries. Pulling everything into one giant object isn't architecture, it's a lack of boundaries. Keeping state as close to where it's used as possible is the hardest, but most rewarding, discipline in modern frontend development.

@@ -1,0 +1,25 @@
+---
+title: "Air Quality & Climate Monitoring Station"
+date: "2023-05-15"
+description: "A C-based embedded system aggregating environmental data from a multi-sensor array to calculate real-time air quality indexes."
+category: "Embedded"
+tags: ["C", "I2C/SPI", "BMP388", "Sensor Fusion"]
+featured: false
+links: null
+image: "https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?auto=format&fit=crop&q=80&w=1000"
+---
+
+During my academic studies, my team and I engineered a dedicated climate and air quality monitoring station. The goal was to build a robust data logger capable of reading raw environmental metrics—temperature, barometric pressure, humidity, and volatile organic compounds (VOCs)—and translating them into a unified Air Quality Index (AQI).
+
+### Hardware & Sensor Array
+The core logic was written entirely in C and deployed on a small-footprint microcontroller. For barometric pressure and high-resolution temperature sensing, we utilized the **BMP388** via SPI, alongside dedicated humidity and gas sensors communicating over the I2C bus.
+
+A significant part of the engineering effort went into managing bus contention. Querying multiple sensors simultaneously on a shared I2C bus without proper timeout handling can easily stall the MCU. I implemented strict, non-blocking polling loops to ensure continuous data flow.
+
+### Data Processing & Noise Reduction
+Raw sensor data is inherently noisy. A drafty room or nearby heat source causes micro-fluctuations in the sensor's analog-to-digital converters (ADCs). 
+
+Instead of passing these noisy raw integers directly to the display, we implemented a sliding window average (Digital Low-Pass Filter) in software. This drastically smoothed out the pressure and humidity curves, making the resulting AQI calculations deterministic and stable. 
+
+### Why This Mattered
+This project laid the foundational academic groundwork for my current avionics work. Learning how to properly interface with the BMP388 at the register level—handling calibration coefficients and timing requirements—directly translated into the apogee detection algorithms I now write for high-power rocketry.

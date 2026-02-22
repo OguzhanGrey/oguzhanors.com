@@ -1,0 +1,23 @@
+---
+title: "Word Chain Game"
+description: "A fast-paced, time-limited browser game built with React and the Context API."
+date: "2023-11-20"
+link: "https://word-chain-game-psi.vercel.app"
+github: "https://github.com/OguzhanGrey/word-chain-game"
+category: "Frontend"
+tags: ["React", "State Management", "Vite", "CSS3"]
+image: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80&w=1000"
+---
+
+A highly interactive web-based puzzle game where players must rapidly build a chain of words. The core mechanic requires every new word to begin with the final letter of the previous word.
+
+### Game Mechanics & State
+The game demands high-frequency state updates, tracking:
+- **15-Second Timers:** Using `setInterval` cleanly within React lifecycles to prevent memory leaks.
+- **Complex Scoring:** Awarding base points, plus strict multiplier logic for words exceeding 5, 7, and 10 letters.
+- **Validation:** Ensuring words are valid English, at least 3 letters long, and haven't been used previously in the current chain session.
+
+### Technical Implementation
+To keep the UI snappy and avoid prop-drilling across the game board, timer, and score components, I utilized the **React Context API**. 
+
+The interface leverages modern **CSS3 Glassmorphism** and robust gradient backgrounds to create an engaging, arcade-like feel while remaining entirely responsive across mobile devices and desktop browsers.

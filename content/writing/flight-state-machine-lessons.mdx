@@ -1,0 +1,36 @@
+---
+title: "Designing Flight State Machines That Don't Explode"
+date: "2023-11-04"
+description: "Why predictable state transitions are the only thing separating a successful flight from a lawn dart."
+tags: ["Avionics", "C++", "Architecture"]
+---
+
+Writing a flight state machine for a rocket isn't about making the code elegant. It's about making sure you know exactly what the vehicle is doing when a barometric sensor inevitably glitches at Mach 1.
+
+Early on in my embedded journey, I wrote a flight computer using deeply nested `if` statements. It was a nightmare to debug. A random pressure spike would trick the code into thinking we were descending, firing the recovery system prematurely. 
+
+I quickly learned why the aerospace industry relies on strict, mathematically provable Finite State Machines (FSMs).
+
+**The Only States That Matter**
+
+For a standard suborbital flight, the state machine is actually pretty simple:
+- `IDLE`: Sitting on the pad, waiting for launch command.
+- `BOOST`: Motor is burning, high acceleration.
+- `COAST`: Motor is burnt out, coasting to apogee.
+- `APOGEE`: Highest point reached, deploy drogue.
+- `DESCENT`: Falling under parachute.
+- `LANDED`: Stop logging, save power.
+
+The trick isn't defining the states—it's defining the **transitions**. 
+
+**Voting Systems and Debouncing**
+
+You can't rely on a single sensor reading to trigger a state change. If an accelerometer spikes to 5G for one millisecond because someone tapped the airframe, you don't want the rocket thinking it just launched.
+
+We implemented a voting system. The state transition logic required:
+1. Acceleration > 3G for at least 3 consecutive loops (at 100Hz).
+2. Altitude must be strictly increasing.
+
+By debouncing the physical sensor data the same way you'd debounce a physical button on a UI, the system became rock solid.
+
+Building avionics taught me to always assume the input data is lying to you. Your architecture has to be resilient enough to handle lies without entering an unrecoverable state.

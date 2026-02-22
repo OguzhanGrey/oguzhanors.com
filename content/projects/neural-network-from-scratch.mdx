@@ -1,0 +1,44 @@
+---
+title: "Neural Network from Scratch (Numpy Only)"
+date: "2026-05-20"
+description: "A bare-metal implementation of a feedforward neural network, entirely bypassing modern deep learning frameworks."
+category: "Upcoming"
+tags: ["Python", "numpy", "matplotlib"]
+featured: true
+status: "Planned"
+links: null
+image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&q=80&w=1000"
+---
+
+### Overview
+Modern deep learning frameworks abstract away the brutal calculus and matrix algebra required to actually optimize a network. To build a fundamental understanding of backpropagation, this academic project mandates constructing a Multi-Layer Perceptron (MLP) using nothing but raw mathematics and `numpy`.
+
+### Problem
+Operating without PyTorch or TensorFlow means manually tracking every forward pass activation and explicitly computing the chain-rule derivatives for the backward pass. The challenge is ensuring the matrix operants perfectly align across batches to calculate the gradient geometries correctly.
+
+### Constraints
+- Absolute ban on automated differentiation libraries.
+- Must support modular construction of Dense layers, ReLU activations, and Softmax output.
+- Must execute on standard CPU architecture.
+
+### Architecture
+The network is structured as a series of class objects, each enforcing strict `forward()` and `backward()` interfaces. 
+
+During the forward pass, each layer caches its inputs. During the backward pass, the network calculates the Cross-Entropy loss derivative and feeds the error backwards. Each layer updates its internal weight matrices via Stochastic Gradient Descent (SGD).
+
+### Key Decisions
+I elected to enforce strict dimensional asserting throughout the `numpy` dot products. The most common silent failure in scratch-built networks is broadcasting errors mutating the gradient shapes. Assertions crash the program immediately upon dimensional mismatch, saving hours of debugging "vanishing gradient" symptoms that are actually just matrix bugs.
+
+### Evaluation Plan
+The architecture will be evaluated against the classic MNIST and Fashion-MNIST datasets.
+- **Split:** 80% Training, 20% Validation.
+- **Metrics:** Tracking categorical cross-entropy loss and absolute accuracy at the end of each epoch.
+- **Validation:** Plotting the training vs. validation loss curves using `matplotlib` to ensure the network isn't simply memorizing the training data.
+
+### Deliverables
+- The core numpy-based NN framework.
+- Training scripts mapping the hyperparameters (learning rate, batch size, epoch count).
+- Plotted loss/accuracy curves.
+
+### What I'd Improve Next
+The manual derivatives are currently trusted implicitly. Implementing a rigorous Numerical Gradient Checking suite (perturbing weights by a minute epsilon value and calculating the finite difference) is critical to mathematically prove the analytic backpropagation formulas are flawless.

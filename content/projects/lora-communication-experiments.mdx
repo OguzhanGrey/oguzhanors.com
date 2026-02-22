@@ -1,0 +1,26 @@
+---
+title: "LoRa Communication Experiments"
+date: "2024-11-05"
+description: "Benchmarking Long Range (LoRa) RF modules for aerospace telemetry integration."
+category: "Embedded"
+tags: ["C", "LoRa", "SPI", "RF"]
+featured: false
+links: null
+image: "https://images.unsplash.com/photo-1520869562399-e772f042f422?auto=format&fit=crop&q=80&w=1000"
+---
+
+To prepare for the long-range telecommunications required at IREC 2026, I led a series of experiments evaluating raw LoRa transceivers (specifically the SX127x series). The goal was to understand the realistic boundaries of the hardware before integrating it into the main flight computer.
+
+### TX/RX Constraints
+LoRa is fantastic for range, but the trade-off is data rate. You cannot blast 100Hz telemetry over LoRa without saturating the airwaves or violating duty-cycle limits. During bench testing, we realized that increasing the spreading factor (SF) drastically improved our signal-to-noise ratio (SNR) through physical obstacles, but the time-on-air for a 32-byte packet spiked to several hundred milliseconds. 
+
+### Structured Packet Design
+Because we couldn't send every data point, we had to design a specific "Long Range" telemetry packet. Instead of packing 20 variables, we reduced the payload to the absolute criticals necessary for vehicle recovery: GPS Latitude, GPS Longitude, Altitude, and Flight State. 
+
+By packing this down to just 12 bytes, we could keep the spreading factor high for maximum penetration while keeping the transmission time fast enough to not block the MCU's main execution loop.
+
+### Reliability Trade-offs
+A major constraint we discovered was SPI bus contention. If the CPU was busy servicing a barometric sensor read, it couldn't simultaneously handle the LoRa TX interrupt. I ended up implementing a strict time-slotting approach in the main loop to ensure the radio was only commanded to transmit when the SPI bus was guaranteed to be idle.
+
+### Looking Forward
+While the standalone tests were highly successful, handling the blocking nature of the radio's TX-Done interrupts requires very careful interrupt priority management on the STM32. For future iterations, moving the LoRa handling entirely to a dedicated DMA channel or a secondary coprocessor would isolate the RF complexity from the flight-critical state machine.

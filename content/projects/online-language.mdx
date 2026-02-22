@@ -1,0 +1,27 @@
+---
+title: "Online Language Tutor Platform"
+description: "A comprehensive platform connecting students with language tutors, featuring real-time data synchronization and complex form handling."
+date: "2024-03-10"
+link: "https://github.com/OguzhanGrey/OnlineLanguage"
+github: "https://github.com/OguzhanGrey/OnlineLanguage"
+category: "Full-Stack"
+tags: ["React 19", "TypeScript", "Vite", "Firebase", "shadcn/ui"]
+image: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=1000&auto=format&fit=crop"
+---
+
+A robust, modern platform designed to bridge the gap between language learners and qualified tutors. The application serves as a complete marketplace and booking system.
+
+### Architecture & Tech Stack
+Built using bleeding-edge **React 19** and **TypeScript**, the frontend is served via **Vite** for incredibly fast HMR and build times. The UI is constructed with **TailwindCSS** and accessible primitives from **shadcn/ui** and **Radix UI**. 
+
+The backend relies entirely on **Firebase 12**, utilizing:
+- **Firebase Authentication** for secure student/tutor login sessions.
+- **Realtime Database** for live synchronization of tutor availability and booking statuses.
+
+### Complex Form Management
+Booking a tutor involves multi-step validation. I integrated **React Hook Form** alongside **Yup** schema validation to ensure that trial lesson bookings are robust, strictly typed, and performant without causing unnecessary React re-renders.
+
+### Key Features
+- **Teacher Discovery & Filtering:** Advanced filtering by proficiency, hourly rate, and target language.
+- **Secure Authentication & Favorites:** Protected routes restricting booking access to authenticated users.
+- **Responsive Grid Layouts:** A deeply responsive UI ensuring mobile users have the same seamless booking experience.

@@ -1,0 +1,27 @@
+---
+title: "Titan Flight Computer"
+date: "2025-10-12"
+description: "Custom avionics system built around STM32 Nucleo-H7 for high-power rocketry."
+category: "Embedded"
+tags: ["C", "STM32", "FreeRTOS", "BMP388"]
+featured: true
+links: null
+image: "https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&q=80&w=1000"
+---
+
+### Architecture & Context
+As the software lead preparing for IREC 2026, my primary focus was designing a deterministic, reliable flight computer. The core hardware is based around the STM32 Nucleo-H7 series. High-power rocketry doesn't forgive software freezing up, so the entire architecture is built around predictable state transitions rather than complex asynchronous event loops. 
+
+### Finite State Machine
+The core of the flight software is a heavily strictly defined finite state machine (FSM). The vehicle transitions through `PAD`, `BOOST`, `COAST`, `APOGEE`, `DROGUE_DESCENT`, `MAIN_DESCENT`, and `LANDED`. I avoided dynamic memory allocation entirely. Everything is statically allocated at boot. State transitions are verified by multiple consecutive sensor readings (a simple software debounce) to prevent a single noisy pressure spike from prematurely deploying the parachute.
+
+### Sensor Integration & Apogee Detection
+For altitude tracking, we integrated the BMP388 barometric sensor via SPI. Raw pressure data is inherently noisy due to airframe vibration and wind shear. To get a clean altitude curve, I implemented a fast, low-overhead exponential moving average (EMA) filter. 
+
+Apogee detection relies on seeing a consistent drop in altitude over a rolling window. Once the condition is met and verified against the expected time-to-apogee safety bounds, the FSM triggers the recovery logic. 
+
+### Recovery & Safety
+The deployment strategy uses dedicated hardware timers to fire pyro channels. If the main flight loop hangs, an independent hardware watchdog timer (IWDG) resets the MCU. We store the current flight state in non-volatile memory so that upon a watchdog reset, the computer wakes up, realizes it's in freefall, and immediately resumes recovery operations.
+
+### What I'd Improve
+Currently, the state machine is heavily coupled to the BMP388 sampling rate. If we switch to an inertial-based apogee detection using an IMU in the future, the FSM timing will need a refactor to cleanly ingest multi-rate sensor fusion data.

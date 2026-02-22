@@ -1,0 +1,31 @@
+---
+title: "Building Reliable Telemetry Pipelines on STM32"
+date: "2024-02-15"
+description: "Lessons learned from pushing 200Hz sensor data over noisy radios without dropping packets."
+tags: ["Embedded", "STM32", "C", "Architecture"]
+---
+
+When you spend most of your time building web apps, you get used to endless memory and reliable TCP connections. Moving to bare-metal STM32 development for telemetry systems is a harsh reality check.
+
+A while back, I had to design a telemetry pipeline that pushed sensor data at 200Hz over a fairly noisy radio link. The first iteration was naive: read the sensor, format a string, and block on `printf` over UART. It worked on the bench. It completely failed the moment we turned on another transmitter and the MCU spent all its time waiting for the UART buffer to clear.
+
+**The DMA Revelation**
+
+The fix was moving entirely to Direct Memory Access (DMA). Instead of the CPU babysitting the serial port, you prepare a contiguous block of memory, point the DMA controller at it, and say "send this when you can." 
+
+But this introduced a new problem: race conditions. If the CPU updates the sensor buffer while the DMA is halfway through transmitting it, you get torn packets—corrupted data on the receiver end.
+
+I ended up using a double-buffering scheme. The CPU writes to Buffer A while DMA reads from Buffer B. When DMA finishes, they swap. It’s a classic graphics rendering technique applied to serial comms, and it immediately eliminated the bottleneck.
+
+**Packet Structure Matters**
+
+Another harsh lesson: JSON is useless here. Every byte counts when your radio link is 9600 baud. We moved to a strict binary format:
+1. Sync Word (`0xAA 0x55`)
+2. Payload length (1 byte)
+3. Message ID (1 byte)
+4. Payload (N bytes)
+5. CRC16 checksum (2 bytes)
+
+If you don't include a checksum, you will eventually parse garbage data as an altitude reading and trigger a parachute deployment while the rocket is sitting on the launch pad. Ask me how I know.
+
+Working close to the metal changes how you think about software. It forces you to respect the hardware constraints and question every abstraction.
