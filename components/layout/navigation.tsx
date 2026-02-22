@@ -70,7 +70,6 @@ export function Navigation() {
                                             {item.name}
                                         </span>
 
-                                        {/* Hover Sliding Background */}
                                         {isHovered && !isActive && (
                                             <motion.div
                                                 layoutId="nav-hover-bg"
@@ -85,7 +84,6 @@ export function Navigation() {
                                             />
                                         )}
 
-                                        {/* Active State Glowing Background */}
                                         {isActive && (
                                             <motion.div
                                                 layoutId="nav-active-bg"

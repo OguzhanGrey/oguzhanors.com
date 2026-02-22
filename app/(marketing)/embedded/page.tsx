@@ -76,7 +76,6 @@ export default function EmbeddedPage() {
                         </p>
                     </div>
 
-                    {/* Systems I Build */}
                     <section className="mb-24">
                         <h2 className="text-2xl font-bold tracking-tight text-white mb-8 border-b border-white/10 pb-4">
                             Systems I Build
@@ -94,7 +93,6 @@ export default function EmbeddedPage() {
                         </div>
                     </section>
 
-                    {/* Toolchain */}
                     <section className="mb-24">
                         <h2 className="text-2xl font-bold tracking-tight text-white mb-8 border-b border-white/10 pb-4">
                             The Toolchain
@@ -118,11 +116,9 @@ export default function EmbeddedPage() {
                         </div>
                     </section>
 
-                    {/* Safety & Reliability */}
                     <section className="mb-24 relative p-8 md:p-12 rounded-2xl border border-white/10 bg-black overflow-hidden">
                         <div className="absolute inset-0 bg-[#0a0a0a] z-0" />
                         <div className="absolute top-0 right-0 p-32 opacity-20 pointer-events-none z-0">
-                            {/* Decorative background grid for technical feel */}
                             <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
                                 <defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.5" /></pattern></defs>
                                 <rect width="100%" height="100%" fill="url(#grid)" />
@@ -150,7 +146,6 @@ export default function EmbeddedPage() {
                         </div>
                     </section>
 
-                    {/* Timeline */}
                     <section>
                         <h2 className="text-2xl font-bold tracking-tight text-white mb-10 border-b border-white/10 pb-4">
                             Hardware Journey

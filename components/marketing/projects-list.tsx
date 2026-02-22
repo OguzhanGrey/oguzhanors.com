@@ -18,14 +18,13 @@ export function ProjectsList({ initialProjects }: { initialProjects: Project[] }
             return isUpcoming;
         }
         if (activeTab === "All") {
-            return !isUpcoming; // Hide upcoming from All
+            return !isUpcoming;
         }
         return project.category === activeTab && !isUpcoming;
     });
 
     return (
         <div className="flex flex-col gap-12">
-            {/* Filter Tabs */}
             <div className="flex flex-wrap items-center gap-2">
                 {categories.map((category) => (
                     <button
@@ -50,7 +49,6 @@ export function ProjectsList({ initialProjects }: { initialProjects: Project[] }
                 ))}
             </div>
 
-            {/* Projects Grid */}
             <motion.div
                 layout
                 className="grid grid-cols-1 md:grid-cols-2 gap-6"

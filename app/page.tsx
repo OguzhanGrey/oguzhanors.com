@@ -1,8 +1,10 @@
 import Link from "next/link";
-import { ArrowRight, Github, Linkedin, Cpu, Code2, Layers, ExternalLink } from "lucide-react";
+import Image from "next/image";
+import type { Metadata } from "next";
+import { ArrowRight, Github, Linkedin, Cpu, Code2, Layers } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Navigation } from "@/components/layout/navigation";
 import { Footer } from "@/components/layout/footer";
@@ -10,7 +12,12 @@ import { getAllProjects, getAllPosts } from "@/lib/mdx";
 import dynamic from "next/dynamic";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 
-// Dynamically import the Heavy WebGL canvas
+export const metadata: Metadata = {
+    title: "Oğuzhan Örs | Full-Stack & Embedded Engineer",
+    description: "Portfolio of Oğuzhan Örs — interdisciplinary software engineer specialising in scalable full-stack systems, embedded RTOS, and avionics software.",
+    alternates: { canonical: "/" },
+};
+
 const HeroScene = dynamic(() => import("@/components/three/hero-scene"), {
     ssr: false,
     loading: () => (
@@ -50,15 +57,11 @@ export default function Home() {
             <Navigation />
 
             <main className="flex-1">
-                {/* Hero Section */}
                 <section className="relative pt-32 pb-24 lg:pt-48 lg:pb-40 overflow-hidden min-h-[90vh] flex items-center">
-                    {/* Full-width, unboxed 3D Background */}
                     <div className="absolute inset-0 z-0 bg-[#030303]">
                         <HeroScene />
                     </div>
-                    {/* Left side gradient overlay to ensure perfect text readability */}
                     <div className="absolute inset-0 z-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent pointer-events-none" />
-                    {/* Top and bottom soft fades */}
                     <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/50 via-transparent to-black pointer-events-none" />
 
                     <Container className="relative z-10">
@@ -95,13 +98,11 @@ export default function Home() {
                                 </div>
                             </div>
 
-                            {/* Empty right column: Allows the 3D scene to show completely unboxed while text is constrained */}
                             <div className="hidden lg:block h-full w-full pointer-events-none" />
                         </div>
                     </Container>
                 </section>
 
-                {/* Signature Highlights */}
                 <section className="py-20 bg-white/[0.02] border-y border-white/5">
                     <Container>
                         <div className="grid md:grid-cols-3 gap-6">
@@ -122,7 +123,6 @@ export default function Home() {
                     </Container>
                 </section>
 
-                {/* Featured Projects */}
                 <section className="py-24">
                     <Container>
                         <div className="flex items-center justify-between mb-12">
@@ -139,8 +139,15 @@ export default function Home() {
                                 <Link key={i} href={`/projects/${project.slug}`} className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-xl">
                                     <Card className="flex flex-col md:flex-row gap-6 p-6 sm:p-8 bg-transparent hover:bg-white/[0.03] transition-colors border-white/10">
                                         <div className="md:w-1/3 aspect-video rounded-lg bg-white/5 border border-white/10 overflow-hidden relative flex items-center justify-center">
-                                            {(project as any).image ? (
-                                                <img src={(project as any).image} alt={project.title} className="w-full h-full object-cover rounded-lg" />
+                                            {project.image ? (
+                                                <Image
+                                                    src={project.image}
+                                                    alt={project.title}
+                                                    fill
+                                                    className="object-cover rounded-lg"
+                                                    sizes="(max-width: 768px) 100vw, 33vw"
+                                                    priority={i === 0}
+                                                />
                                             ) : (
                                                 <span className="text-white/20 font-mono text-sm group-hover:text-white/40 transition-colors">Project Cover</span>
                                             )}
@@ -161,7 +168,6 @@ export default function Home() {
                     </Container>
                 </section>
 
-                {/* Embedded Snapshot */}
                 <section className="py-24 bg-black relative border-t border-white/5">
                     <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay pointer-events-none" />
                     <Container className="relative">
@@ -187,7 +193,6 @@ export default function Home() {
                                 </ul>
                             </div>
 
-                            {/* Terminal mock UI */}
                             <div className="rounded-lg border border-white/10 bg-[#0c0c0c] overflow-hidden shadow-2xl">
                                 <div className="flex items-center px-4 py-3 border-b border-white/5 bg-[#141414]">
                                     <div className="flex gap-2">
@@ -216,7 +221,6 @@ export default function Home() {
                     </Container>
                 </section>
 
-                {/* Writing Preview */}
                 <section className="py-24 border-t border-white/10">
                     <Container>
                         <div className="flex flex-col md:flex-row gap-12 lg:gap-24">

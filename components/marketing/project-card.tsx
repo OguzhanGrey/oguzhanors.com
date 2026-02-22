@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Github, ExternalLink, Star } from "lucide-react";
 import { Project } from "@/types/content";
 import { Card } from "@/components/ui/card";
@@ -16,20 +17,21 @@ export function ProjectCard({ project }: { project: Project }) {
             </Link>
 
             <div className="flex flex-col h-full z-20 pointer-events-none">
-                {/* Optional Image Banner */}
                 {project.image && (
                     <div className="w-full h-48 sm:h-56 relative overflow-hidden border-b border-white/5">
-                        <img
+                        <Image
                             src={project.image}
                             alt={project.title}
-                            className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500"
+                            fill
+                            className="object-cover transform group-hover:scale-105 transition-transform duration-500"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            loading="lazy"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                     </div>
                 )}
 
                 <div className="p-6 md:p-8 flex flex-col flex-grow">
-                    {/* Header */}
                     <div className="flex items-start justify-between gap-4 mb-4">
                         <div className="flex items-center gap-3">
                             <h3 className="text-2xl font-semibold text-white group-hover:text-white/90 transition-colors">
@@ -56,12 +58,9 @@ export function ProjectCard({ project }: { project: Project }) {
                         </div>
                     </div>
 
-                    {/* Description */}
                     <p className="text-white/60 leading-relaxed mb-8 flex-grow">
                         {project.description}
                     </p>
-
-                    {/* Footer */}
                     <div className="flex flex-col gap-4 mt-auto">
                         {project.tags && (
                             <div className="flex flex-wrap gap-2">

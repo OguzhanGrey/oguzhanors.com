@@ -34,7 +34,6 @@ export default function PostDetailPage({ params }: { params: { slug: string } })
         notFound();
     }
 
-    // Use a max-w-3xl for the text block constraint as requested for readability
     return (
         <>
             <Navigation />

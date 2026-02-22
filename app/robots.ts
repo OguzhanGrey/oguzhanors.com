@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
         rules: {
             userAgent: '*',
             allow: '/',
-            disallow: ['/api/'], // Protect API routes from indexing
+            disallow: ['/api/'], 
         },
         sitemap: 'https://oguzhanors.com/sitemap.xml',
     };

@@ -62,7 +62,6 @@ export default function ContactPage() {
                 <Container className="max-w-4xl">
 
                     <div className="grid md:grid-cols-12 gap-12 md:gap-20">
-                        {/* Context Left Column */}
                         <div className="md:col-span-5 flex flex-col gap-6">
                             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-2">
                                 Get in touch
@@ -73,14 +72,13 @@ export default function ContactPage() {
 
                             <div className="hidden md:block mt-8 p-6 rounded-xl border border-white/5 bg-white/[0.02]">
                                 <h3 className="font-semibold text-white mb-2">Based in</h3>
-                                <p className="text-white/60">Istanbul, Turkey</p>
+                                <p className="text-white/60">Aydın, Turkey</p>
                                 <div className="h-px bg-white/10 my-4" />
                                 <h3 className="font-semibold text-white mb-2">Working Hours</h3>
                                 <p className="text-white/60">Mon-Fri, GMT+3</p>
                             </div>
                         </div>
 
-                        {/* Form Right Column */}
                         <div className="md:col-span-7">
                             <Card className="p-8 md:p-10 border-white/10 bg-black shadow-2xl">
 
@@ -100,7 +98,6 @@ export default function ContactPage() {
                                 ) : (
                                     <form onSubmit={handleSubmit} className="flex flex-col gap-6 animate-in fade-in duration-500">
 
-                                        {/* Security Honeypot - hidden from screen readers and visual flow */}
                                         <div style={{ position: "absolute", left: "-9999px" }} aria-hidden="true">
                                             <label htmlFor="_honeypot">Please ignore this field</label>
                                             <input type="text" name="_honeypot" id="_honeypot" tabIndex={-1} autoComplete="off" />

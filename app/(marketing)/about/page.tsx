@@ -14,7 +14,6 @@ export default function AboutPage() {
 
             <main className="flex-1 pt-32 pb-24 border-b border-white/10">
                 <Container className="max-w-3xl">
-                    {/* Main Headline Section */}
                     <section className="mb-16">
                         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-6">
                             Engineering from the DB to Bare Metal
@@ -30,7 +29,6 @@ export default function AboutPage() {
                         </div>
                     </section>
 
-                    {/* Core Focus Section */}
                     <section className="mb-16">
                         <h2 className="text-2xl font-semibold text-white/90 mb-6">Core Focus</h2>
                         <div className="space-y-8">
@@ -55,7 +53,6 @@ export default function AboutPage() {
                         </div>
                     </section>
 
-                    {/* Engineering Philosophy Section */}
                     <section className="mb-16">
                         <h2 className="text-2xl font-semibold text-white/90 mb-6">Engineering Philosophy</h2>
                         <ul className="space-y-4 text-white/60 leading-relaxed list-disc list-inside">
@@ -66,7 +63,6 @@ export default function AboutPage() {
                         </ul>
                     </section>
 
-                    {/* Current Focus Section */}
                     <section className="mb-16">
                         <h2 className="text-2xl font-semibold text-white/90 mb-6">Current Work</h2>
                         <div className="bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8">
@@ -79,7 +75,6 @@ export default function AboutPage() {
                         </div>
                     </section>
 
-                    {/* Closing Section */}
                     <section>
                         <h2 className="text-2xl font-semibold text-white/90 mb-4">Let&apos;s Build Something Real</h2>
                         <p className="text-white/60 leading-relaxed mb-6">

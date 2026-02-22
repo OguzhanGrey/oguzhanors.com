@@ -22,7 +22,6 @@ export const metadata: Metadata = {
         siteName: 'Oğuzhan Örs Portfolio',
         locale: 'en_US',
         type: 'website',
-        // images: [{ url: '/og-image.jpg', width: 1200, height: 630 }],
     },
     robots: {
         index: true,

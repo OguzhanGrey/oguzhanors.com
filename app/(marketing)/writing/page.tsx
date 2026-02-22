@@ -36,8 +36,6 @@ export default function WritingPage() {
                                     <time dateTime={post.date} className="font-mono">
                                         {new Date(post.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                                     </time>
-                                    {/* <span className="w-1 h-1 rounded-full bg-white/20" />
-                  <span>5 min read</span> */}
                                 </div>
 
                                 <div className="group relative">
