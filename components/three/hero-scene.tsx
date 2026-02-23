@@ -146,32 +146,39 @@ function AvionicsWebArchitecture() {
 }
 
 export default function HeroScene() {
-    const [mounted, setMounted] = useState(false);
+    const [canvasReady, setCanvasReady] = useState(false);
+    const [fadeIn, setFadeIn] = useState(false);
 
     useEffect(() => {
-        setMounted(true);
+        const initTimer = setTimeout(() => {
+            setCanvasReady(true);
+            setTimeout(() => setFadeIn(true), 100);
+        }, 800);
+        return () => clearTimeout(initTimer);
     }, []);
 
     return (
         <div className="w-full h-full relative">
             <div
-                className={`absolute inset-0 bg-[#0a0a0a] transition-opacity duration-1000 ${mounted ? "opacity-0" : "opacity-100"}`}
+                className={`absolute inset-0 bg-[#0a0a0a] transition-opacity duration-1000 ${fadeIn ? "opacity-0" : "opacity-100"}`}
                 style={{
                     backgroundImage: "radial-gradient(circle at center, rgba(255,255,255,0.05) 1px, transparent 1px)",
                     backgroundSize: "24px 24px"
                 }}
             />
 
-            <Canvas
-                camera={{ position: [0, 0, 8], fov: 45 }}
-                gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
-                dpr={[1, 1.2]}
-                className="absolute inset-0 pointer-events-none"
-            >
-                <ambientLight intensity={0.5} />
-                <Stars radius={20} depth={50} count={1200} factor={4} saturation={0} fade speed={0.6} />
-                <AvionicsWebArchitecture />
-            </Canvas>
+            {canvasReady && (
+                <Canvas
+                    camera={{ position: [0, 0, 8], fov: 45 }}
+                    gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
+                    dpr={[1, 1.2]}
+                    className="absolute inset-0 pointer-events-none"
+                >
+                    <ambientLight intensity={0.5} />
+                    <Stars radius={20} depth={50} count={1200} factor={4} saturation={0} fade speed={0.6} />
+                    <AvionicsWebArchitecture />
+                </Canvas>
+            )}
         </div>
     );
 }
