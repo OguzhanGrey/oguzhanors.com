@@ -5,7 +5,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = 'https://oguzhanors.com';
 
     // Core static routes
-    const routes = ['', '/projects', '/writing', '/embedded', '/about', '/contact'].map((route) => ({
+    const routes = ['', '/projects', '/writing', '/about', '/contact'].map((route) => ({
         url: `${baseUrl}${route}`,
         lastModified: new Date(),
         changeFrequency: 'monthly' as const,
